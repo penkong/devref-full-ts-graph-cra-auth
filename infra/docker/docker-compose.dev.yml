@@ -5,33 +5,33 @@ services:
   nginx:
     stdin_open: true
 
-  elasticsearch:
-    stdin_open: true
-    restart: always
-    environment:
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-      ELASTIC_PASSWORD: changeme
-      # Use single node discovery in order to disable production mode and avoid bootstrap checks.
-      # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
-      discovery.type: single-node
+  # elasticsearch:
+  #   stdin_open: true
+  #   restart: always
+  #   environment:
+  #     ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+  #     ELASTIC_PASSWORD: changeme
+  #     # Use single node discovery in order to disable production mode and avoid bootstrap checks.
+  #     # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+  #     discovery.type: single-node
 
-  logstash:
-    stdin_open: true
-    restart: always
-    environment:
-      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+  # logstash:
+  #   stdin_open: true
+  #   restart: always
+  #   environment:
+  #     LS_JAVA_OPTS: "-Xmx256m -Xms256m"
 
-  kibana:
-    stdin_open: true
-    restart: always
+  # kibana:
+  #   stdin_open: true
+  #   restart: always
 
   # portainer:
   #   stdin_open: true
 
-  redis:
-    stdin_open: true
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
+  # redis:
+  #   stdin_open: true
+  #   environment:
+  #     - ALLOW_EMPTY_PASSWORD=yes
 
   # redis-commander:
   #   environment:
@@ -45,40 +45,32 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=secret
       - MONGO_INITDB_DATABASE=vanillanodemongo
 
-  # mongo-express:
-  #   stdin_open: true
-  #   environment:
-  #     - ME_CONFIG_MONGODB_ADMINUSERNAME=root
-  #     - ME_CONFIG_MONGODB_ADMINPASSWORD=secret
-  #     - ME_CONFIG_MONGODB_SERVER=mongodb
-  #     - ME_CONFIG_SITE_BASEURL=/__info__/mongo-express
+  mongo-express:
+    stdin_open: true
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=secret
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_SITE_BASEURL=/__info__/mongo-express
 
-  apiauth:
+  apilist:
     build: 
       dockerfile: Dockerfile.dev
       # target: dev
     stdin_open: true
     volumes: 
       - /app/node_modules 
-      - ../../app/services/auth:/app
+      - ../../app/services/list:/app
     environment:
-      - REDIS=redis
       - PORT=5002
       # to specify any other option for connection add ?retryWrites=true
       # to import data in mongo mongorestore --gzip --archive=sampledata.archive.gz
       - DBURL=mongodb://<MONGOUSER>:<MONGOPASS>@mongodb:27017
-      - DBNAME=vanillanodemongo
+      - DBNAME=listgraph
       - NODE_ENV=development
       - MONGOPASS=secret
       - MONGOUSER=root
       - CORS=http://localhost:3000
-      - JWT_KEY=uy6hw65hywtrnbewhnterwhg
-      - JWT_TTL=365d
-      - RESET_TOKEN_EXP=600
-      - SENDGRID_USER=nazemi.works@gmail.com
-      - SENDGRID_PASS=https://signup.sendgrid.
-      - EMAIL_FROM=security@devref.ir
-      - SMTP_SERVER=fdsfdsfsdfsdfsdfsdf
 
 
 # docker-compose run can run command shell 

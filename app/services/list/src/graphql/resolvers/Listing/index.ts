@@ -1,6 +1,6 @@
-import { ObjectId } from "mongodb";
-import { IResolvers } from "apollo-server-express";
-import { Database, Listing } from "../../../lib/types";
+import { ObjectId } from 'mongodb'
+import { IResolvers } from 'apollo-server-express'
+import { Database, Listing } from '../../../@types/types'
 
 export const listingResolvers: IResolvers = {
   Query: {
@@ -9,7 +9,7 @@ export const listingResolvers: IResolvers = {
       _args: {},
       { db }: { db: Database }
     ): Promise<Listing[]> => {
-      return await db.listings.find({}).toArray();
+      return await db.listings.find({}).toArray()
     }
   },
   Mutation: {
@@ -20,16 +20,16 @@ export const listingResolvers: IResolvers = {
     ): Promise<Listing> => {
       const deleteRes = await db.listings.findOneAndDelete({
         _id: new ObjectId(id)
-      });
+      })
 
       if (!deleteRes.value) {
-        throw new Error("failed to delete listing");
+        throw new Error('failed to delete listing')
       }
 
-      return deleteRes.value;
+      return deleteRes.value
     }
   },
   Listing: {
     id: (listing: Listing): string => listing._id.toString()
   }
-};
+}
