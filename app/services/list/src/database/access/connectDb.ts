@@ -1,8 +1,10 @@
 import { MongoClient } from 'mongodb'
-import { Database } from '../../@types/types'
+
 import { config } from '../../config'
+import { Database } from '../../@types/types'
 
 // ---
+
 const { DBURL, MONGOUSER, MONGOPASS, DBNAME } = config
 
 const url = DBURL!
@@ -11,7 +13,9 @@ const url = DBURL!
 
 let client: MongoClient
 
-export const connectDatabase = async (): Promise<Database> => {
+// ---
+
+export const connectDB = async (): Promise<Database> => {
   try {
     //
 
@@ -27,7 +31,8 @@ export const connectDatabase = async (): Promise<Database> => {
     const db = client.db(DBNAME)
 
     return {
-      listings: db.collection('listing')
+      listings: db.collection('listing'),
+      client
     }
 
     //
