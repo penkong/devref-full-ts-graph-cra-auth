@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: confmap
+  namespace: default
+data:
+  port: '5002'
+  dburl: mongodb://<MONGOUSER>:<MONGOPASS>@mongo-srv:27017/?authSource=admin
+  dbname: deverevanillanodemong
+  envnode: development
+  cors: http://localhost:3000
