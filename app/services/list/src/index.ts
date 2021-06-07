@@ -22,12 +22,13 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, please try again in an hour!'
 })
 
-// app: Application
-
 const bootstrap = async () => {
-  // if (!PORT) throw new Error('Need Port!')
+  //
 
-  const app = express()
+  if (!PORT) throw new Error('Need Port!')
+
+  const app = express() // Application
+
   app.set('trust proxy', 1)
   app.use(express.json({ limit: '2kb' }))
   app.use(express.urlencoded({ extended: true, limit: '5kb' }))
@@ -51,7 +52,7 @@ const bootstrap = async () => {
     const server = new ApolloServer({
       typeDefs,
       resolvers,
-      context: () => ({ db }),
+      context: () => ({ db: { listings: db.listings } }),
       dataSources: () => {
         return {}
       }
@@ -67,7 +68,11 @@ const bootstrap = async () => {
     app.listen(5002)
 
     console.log(`[app] : http://localhost:${5002}`)
+
+    //
   } catch (error) {
+    //
+
     console.log(error)
     await db.client.close()
     await RedisService.quit()
@@ -78,12 +83,8 @@ const bootstrap = async () => {
 bootstrap()
 
 process.on('warning', e => console.warn(e.stack))
-process.on('SIGINT', () => {
-  shutdown()
-})
-process.on('SIGTERM', () => {
-  shutdown()
-})
+process.on('SIGINT', () => shutdown())
+process.on('SIGTERM', () => shutdown())
 
 // shut down server
 function shutdown() {
@@ -92,7 +93,3 @@ function shutdown() {
   process.exitCode = 1
   process.exit()
 }
-
-// Note: You will need to introduce a .env file at the root of the project
-// that has the PORT, DB_USER, DB_USER_PASSWORD, and DB_CLUSTER environment variables defined.
-// Otherwise, the server will not be able to start and/or connect to the database
