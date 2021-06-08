@@ -15,20 +15,13 @@ import { typeDefs, resolvers } from './graphql'
 
 // ---
 
-const { DBURL, MONGOUSER, MONGOPASS, DBNAME, PORT, CORS, __prod__ } = config
+const { PORT } = config
 
 const limiter = rateLimit({
   max: 30,
   windowMs: 60 * 1000,
   message: 'Too many requests from this IP, please try again in an hour!'
 })
-
-const url = DBURL!
-  .replace('<MONGOUSER>', MONGOUSER!)
-  .replace('<MONGOPASS>', MONGOPASS!)
-
-console.log(config)
-console.log(url)
 
 // ---
 
@@ -57,7 +50,7 @@ const bootstrap = async () => {
       })
     )
     app.use(compression())
-    // app.use('/__grqphql', limiter)
+    app.use('/grqphql', limiter)
     app.use(
       helmet({
         contentSecurityPolicy: false
@@ -78,9 +71,10 @@ const bootstrap = async () => {
     server.applyMiddleware({ app } as ServerRegistration)
 
     // catch all routes
-    // app.all('*', (_req: Request, _res: Response) => {
-    //   throw new Error('NOT FOUND ROUTE!')
-    // })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    app.all('*', (_req: Request, _res: Response) => {
+      throw new Error('NOT FOUND ROUTE!')
+    })
 
     app.listen(PORT)
 

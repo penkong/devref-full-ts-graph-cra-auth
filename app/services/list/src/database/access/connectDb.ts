@@ -7,9 +7,10 @@ import { Database } from '../../@types/types'
 
 const { DBURL, MONGOUSER, MONGOPASS, DBNAME } = config
 
-const url = DBURL!
-  .replace('<MONGOUSER>', MONGOUSER!)
-  .replace('<MONGOPASS>', MONGOPASS!)
+const url = DBURL.replace('<MONGOUSER>', MONGOUSER).replace(
+  '<MONGOPASS>',
+  MONGOPASS
+)
 
 let client: MongoClient
 
