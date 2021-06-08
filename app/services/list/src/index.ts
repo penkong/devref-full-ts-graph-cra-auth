@@ -15,7 +15,7 @@ import { typeDefs, resolvers } from './graphql'
 
 // ---
 
-const { DBURL, MONGOUSER, MONGOPASS, DBNAME, PORT, CORS } = config
+const { DBURL, MONGOUSER, MONGOPASS, DBNAME, PORT, CORS, __prod__ } = config
 
 const limiter = rateLimit({
   max: 30,
@@ -38,21 +38,6 @@ const bootstrap = async () => {
 
   if (!PORT) throw new Error('Need Port!')
 
-  const app = express() as Application // Application
-
-  app.set('trust proxy', 1)
-  app.use(express.json({ limit: '2kb' }))
-  app.use(express.urlencoded({ extended: true, limit: '5kb' }))
-  app.use(
-    cors({
-      origin: CORS,
-      credentials: true
-    })
-  )
-  app.use(compression())
-  app.use('/__grqphql', limiter)
-  app.use(helmet())
-
   try {
     db = await connectDB()
 
@@ -60,22 +45,42 @@ const bootstrap = async () => {
       console.log('RedisService connected and ready to use ...')
     })
 
+    const app = express() as Application // Application
+
+    app.set('trust proxy', 1)
+    app.use(express.json({ limit: '2kb' }))
+    app.use(express.urlencoded({ extended: true, limit: '5kb' }))
+    app.use(
+      cors({
+        origin: '*',
+        credentials: true
+      })
+    )
+    app.use(compression())
+    // app.use('/__grqphql', limiter)
+    app.use(
+      helmet({
+        contentSecurityPolicy: false
+      })
+    )
+
     const server = new ApolloServer({
       typeDefs,
       resolvers,
+      // playground: { version: '1.7.8' },
       context: () => ({ db }),
       dataSources: () => {
         return {}
       }
     })
-    await server.start()
+    // await server.start()
 
-    server.applyMiddleware({ app, path: '/__graphql' } as ServerRegistration)
+    server.applyMiddleware({ app } as ServerRegistration)
 
     // catch all routes
-    app.all('*', (_req: Request, _res: Response) => {
-      throw new Error('NOT FOUND ROUTE!')
-    })
+    // app.all('*', (_req: Request, _res: Response) => {
+    //   throw new Error('NOT FOUND ROUTE!')
+    // })
 
     app.listen(PORT)
 
