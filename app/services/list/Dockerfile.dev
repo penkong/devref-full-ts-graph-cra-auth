@@ -7,18 +7,12 @@ RUN apk add --no-cache bash tini curl
 ENV REDIS=http://127.0.0.1
 ENV PORT=5002
 ENV DBURL=mongodb://localhost:27017
-ENV DBNAME=vanillanodemongo
+ENV DBNAME=listgraphql
 ENV NODE_ENV=development
 ENV MONGOPASS=secret
 ENV MONGOUSER=root
 ENV CORS=http://localhost:3000
-ENV JWT_KEY=uy6hw65hywtrnbewhnterwhg
-ENV JWT_TTL=365d
-ENV RESET_TOKEN_EXP=300
-ENV SENDGRID_USER=nazemi.works@gmail.com
-ENV SENDGRID_PASS=https://signup.sendgrid.
-ENV EMAIL_FROM=security@devref.ir
-ENV SMTP_SERVER=fdsfsdfsdfsdfsdf
+
 
 
 

@@ -10,9 +10,9 @@ services:
     tty: true
     depends_on: 
       - apilist
-      # - redis
+      - redis
       - mongodb
-      # - redis-commander
+      - redis-commander
       - mongo-express
       # - portainer
       # - kibana
@@ -82,17 +82,17 @@ services:
   #     - portainer_data:/data
   #     - /var/run/docker.sock:/var/run/docker.sock 
 
-  # redis:
-  #   image: "redis:6.2.2-alpine"
-  #   restart: always
-  #   volumes:
-  #     - redisvol:/var/lib/redis
+  redis:
+    image: "redis:6.2.2-alpine"
+    restart: always
+    volumes:
+      - redisvol:/var/lib/redis
   
-  # redis-commander:
-  #   image: "rediscommander/redis-commander:latest"
-  #   restart: always
-  #   depends_on: 
-  #     - redis
+  redis-commander:
+    image: "rediscommander/redis-commander:latest"
+    restart: always
+    depends_on: 
+      - redis
 
   mongodb:
     image: mongo
@@ -113,7 +113,7 @@ services:
     restart: always
     depends_on:
       - mongodb
-      # - redis
+      - redis
   
 
 
@@ -122,8 +122,8 @@ volumes:
     driver: local
   # portainer_data:
   #   driver: local
-  # redisvol:
-  #   driver: local
+  redisvol:
+    driver: local
   # elsasticvol:
   #   driver: local
   # logs:

@@ -28,22 +28,22 @@ services:
   # portainer:
   #   stdin_open: true
 
-  # redis:
-  #   stdin_open: true
-  #   environment:
-  #     - ALLOW_EMPTY_PASSWORD=yes
+  redis:
+    stdin_open: true
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
 
-  # redis-commander:
-  #   environment:
-  #     - REDIS_HOSTS=local:redis:6379
-  #     - PORT=8083
+  redis-commander:
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+      - PORT=8083
 
   mongodb:
     stdin_open: true
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=secret
-      - MONGO_INITDB_DATABASE=vanillanodemongo
+      - MONGO_INITDB_DATABASE=listgraphql
 
   mongo-express:
     stdin_open: true
@@ -62,11 +62,12 @@ services:
       - /app/node_modules 
       - ../../app/services/list:/app
     environment:
+      - REDIS=redis
       - PORT=5002
       # to specify any other option for connection add ?retryWrites=true
       # to import data in mongo mongorestore --gzip --archive=sampledata.archive.gz
       - DBURL=mongodb://<MONGOUSER>:<MONGOPASS>@mongodb:27017
-      - DBNAME=listgraph
+      - DBNAME=listgraphql
       - NODE_ENV=development
       - MONGOPASS=secret
       - MONGOUSER=root
