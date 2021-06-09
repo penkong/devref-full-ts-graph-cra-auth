@@ -9,21 +9,24 @@ RUN mkdir -p /app
 WORKDIR "/app"
 
 
-COPY package*.json ./
+RUN chown -R node:node .
+USER node
+COPY --chown=node package*.json ./
 
-
-RUN npm config set unsafe-perm true
+RUN npm config set unsafe-perm true --allow-root
 # we use npm ci here so only the package-lock.json file is used
 RUN npm config list \
     && npm ci \
     && npm cache clean --force
 
-COPY . .
-
+COPY --chown=node . .
 
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]
+
+
+
 
 
 

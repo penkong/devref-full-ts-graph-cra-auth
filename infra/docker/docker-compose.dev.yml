@@ -82,6 +82,8 @@ services:
       - ../../app/web:/app
     environment: 
       - PUBLIC_ROUTE=http://apilist:5002
+    ports: 
+      - 3000:3000
 
 
 # docker-compose run can run command shell 
