@@ -9,6 +9,7 @@ services:
       - 443:443
     tty: true
     depends_on: 
+      - webcra
       - apilist
       # - redis
       - mongodb
@@ -114,6 +115,13 @@ services:
     depends_on:
       - mongodb
       # - redis
+
+  webcra: 
+    build:
+      context: ../../app/web
+    restart: always
+    depends_on: 
+      - apilist
   
 
 

@@ -9,9 +9,7 @@ export const listingResolvers: IResolvers = {
       // _args: {},
       _,
       { db }: { db: Database }
-    ): Promise<Listing[]> => {
-      return await db.listings.find({}).toArray()
-    }
+    ): Promise<Listing[]> => await db.listings.find({}).toArray()
   },
   Mutation: {
     deleteListing: async (
@@ -23,14 +21,14 @@ export const listingResolvers: IResolvers = {
         _id: new ObjectId(id)
       })
 
-      if (!deleteRes.value) {
-        throw new Error('failed to delete listing')
-      }
+      if (!deleteRes.value) throw new Error('failed to delete listing')
 
       return deleteRes.value
     }
   },
+  // trivial resolvers need to handle nameing different cases .
   Listing: {
+    // root
     id: (listing: Listing): string => listing._id.toString()
   }
 }

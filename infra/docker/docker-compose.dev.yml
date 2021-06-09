@@ -73,5 +73,15 @@ services:
       - MONGOUSER=root
       - CORS=http://localhost:3000
 
+  webcra: 
+    build:
+      dockerfile: Dockerfile.dev
+    stdin_open: true
+    volumes: 
+      - /app/node_modules
+      - ../../app/web:/app
+    environment: 
+      - PUBLIC_ROUTE=http://apilist:5002
+
 
 # docker-compose run can run command shell 
