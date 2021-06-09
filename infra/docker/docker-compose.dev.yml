@@ -28,15 +28,15 @@ services:
   # portainer:
   #   stdin_open: true
 
-  redis:
-    stdin_open: true
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
+  # redis:
+  #   stdin_open: true
+  #   environment:
+  #     - ALLOW_EMPTY_PASSWORD=yes
 
-  redis-commander:
-    environment:
-      - REDIS_HOSTS=local:redis:6379
-      - PORT=8083
+  # redis-commander:
+  #   environment:
+  #     - REDIS_HOSTS=local:redis:6379
+  #     - PORT=8083
 
   mongodb:
     stdin_open: true

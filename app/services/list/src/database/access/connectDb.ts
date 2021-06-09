@@ -1,16 +1,16 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { MongoClient } from 'mongodb'
 
 import { config } from '../../config'
-import { Database } from '../../@types/types'
+import { Database, Listing } from '../../@types/types'
 
 // ---
 
 const { DBURL, MONGOUSER, MONGOPASS, DBNAME } = config
 
-const url = DBURL.replace('<MONGOUSER>', MONGOUSER).replace(
-  '<MONGOPASS>',
-  MONGOPASS
-)
+const url = DBURL!
+  .replace('<MONGOUSER>', MONGOUSER!)
+  .replace('<MONGOPASS>', MONGOPASS!)
 
 let client: MongoClient
 
@@ -32,7 +32,7 @@ export const connectDB = async (): Promise<Database> => {
     const db = client.db(DBNAME)
 
     return {
-      listings: db.collection('listing'),
+      listings: db.collection<Listing>('listing'),
       client
     }
 

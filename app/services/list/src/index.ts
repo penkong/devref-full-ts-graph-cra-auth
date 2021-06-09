@@ -10,7 +10,7 @@ import { ApolloServer, ServerRegistration } from 'apollo-server-express'
 import { config } from './config'
 import { connectDB } from './database'
 import { Database } from './@types/types'
-import { RedisService } from './services'
+// import { RedisService } from './services'
 import { typeDefs, resolvers } from './graphql'
 
 // ---
@@ -34,9 +34,9 @@ const bootstrap = async () => {
   try {
     db = await connectDB()
 
-    RedisService.on('ready', () => {
-      console.log('RedisService connected and ready to use ...')
-    })
+    // RedisService.on('ready', () => {
+    //   console.log('RedisService connected and ready to use ...')
+    // })
 
     const app = express() as Application // Application
 
@@ -66,7 +66,6 @@ const bootstrap = async () => {
         return {}
       }
     })
-    // await server.start()
 
     server.applyMiddleware({ app } as ServerRegistration)
 
@@ -86,7 +85,7 @@ const bootstrap = async () => {
 
     console.log(error)
     await db.client.close()
-    await RedisService.quit()
+    // await RedisService.quit()
     process.exit(1)
   }
 }
@@ -100,7 +99,7 @@ process.on('SIGTERM', async () => await shutdown())
 // shut down server
 async function shutdown() {
   await db.client.close()
-  RedisService.quit()
+  // RedisService.quit()
   process.exitCode = 1
   process.exit()
 }

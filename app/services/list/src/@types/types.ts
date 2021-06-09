@@ -1,5 +1,7 @@
 import { Collection, MongoClient, ObjectId } from 'mongodb'
 
+// ---
+
 export interface Listing {
   _id: ObjectId
   title: string
